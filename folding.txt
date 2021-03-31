@@ -1,0 +1,777 @@
+[java] Running COMP207p courswork-2
+[java] *******comp0012.target.ConstantVariableFolding*********
+
+[java] ...............optimizing method: 0 public void <init>()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 3
+[java]    0: aload_0[42](1)
+[java]    1: invokespecial[183](3) 1
+[java]    4: return[177](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 3
+[java]    0: aload_0[42](1)
+[java]    1: invokespecial[183](3) 1
+[java]    4: return[177](1)
+[java]
+[java] ...............optimizing method: 1 public int methodOne()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 14
+[java]    0: bipush[16](2) 62
+[java]    2: istore_1[60](1)
+[java]    3: iload_1[27](1)
+[java]    4: sipush[17](3) 764
+[java]    7: iadd[96](1)
+[java]    8: iconst_3[6](1)
+[java]    9: imul[104](1)
+[java]   10: istore_2[61](1)
+[java]   11: iload_2[28](1)
+[java]   12: sipush[17](3) 1234
+[java]   15: iadd[96](1)
+[java]   16: iload_1[27](1)
+[java]   17: isub[100](1)
+[java]   18: ireturn[172](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 14
+[java]    0: bipush[16](2) 62
+[java]    2: istore_1[60](1)
+[java]    3: iload_1[27](1)
+[java]    4: sipush[17](3) 764
+[java]    7: iadd[96](1)
+[java]    8: iconst_3[6](1)
+[java]    9: imul[104](1)
+[java]   10: istore_2[61](1)
+[java]   11: iload_2[28](1)
+[java]   12: sipush[17](3) 1234
+[java]   15: iadd[96](1)
+[java]   16: iload_1[27](1)
+[java]   17: isub[100](1)
+[java]   18: ireturn[172](1)
+[java]
+[java] ...............optimizing method: 2 public double methodTwo()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 9
+[java]    0: ldc2_w[20](3) 2
+[java]    3: dstore_1[72](1)
+[java]    4: iconst_1[4](1)
+[java]    5: istore_3[62](1)
+[java]    6: dload_1[39](1)
+[java]    7: iload_3[29](1)
+[java]    8: i2d[135](1)
+[java]    9: dadd[99](1)
+[java]   10: dreturn[175](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 9
+[java]    0: ldc2_w[20](3) 2
+[java]    3: dstore_1[72](1)
+[java]    4: iconst_1[4](1)
+[java]    5: istore_3[62](1)
+[java]    6: dload_1[39](1)
+[java]    7: iload_3[29](1)
+[java]    8: i2d[135](1)
+[java]    9: dadd[99](1)
+[java]   10: dreturn[175](1)
+[java]
+[java] ...............optimizing method: 3 public boolean methodThree()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 11
+[java]    0: sipush[17](3) 12345
+[java]    3: istore_1[60](1)
+[java]    4: ldc[18](2) 4
+[java]    6: istore_2[61](1)
+[java]    7: iload_1[27](1)
+[java]    8: iload_2[28](1)
+[java]    9: if_icmple[164](3) -> iconst_0
+[java]   12: iconst_1[4](1)
+[java]   13: goto[167](3) -> ireturn
+[java]   16: iconst_0[3](1)
+[java]   17: ireturn[172](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 11
+[java]    0: sipush[17](3) 12345
+[java]    3: istore_1[60](1)
+[java]    4: ldc[18](2) 4
+[java]    6: istore_2[61](1)
+[java]    7: iload_1[27](1)
+[java]    8: iload_2[28](1)
+[java]    9: if_icmple[164](3) -> iconst_0
+[java]   12: iconst_1[4](1)
+[java]   13: goto[167](3) -> ireturn
+[java]   16: iconst_0[3](1)
+[java]   17: ireturn[172](1)
+[java] 
+[java] ...............optimizing method: 4 public boolean methodFour()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 16
+[java]    0: ldc2_w[20](3) 5
+[java]    3: lstore_1[64](1)
+[java]    4: ldc2_w[20](3) 7
+[java]    7: lstore_3[66](1)
+[java]    8: lload_1[31](1)
+[java]    9: lload_3[33](1)
+[java]   10: ladd[97](1)
+[java]   11: lstore[55](2) 5
+[java]   13: lload_1[31](1)
+[java]   14: lload_3[33](1)
+[java]   15: lcmp[148](1)
+[java]   16: ifle[158](3) -> iconst_0
+[java]   19: iconst_1[4](1)
+[java]   20: goto[167](3) -> ireturn
+[java]   23: iconst_0[3](1)
+[java]   24: ireturn[172](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 16
+[java]    0: ldc2_w[20](3) 5
+[java]    3: lstore_1[64](1)
+[java]    4: ldc2_w[20](3) 7
+[java]    7: lstore_3[66](1)
+[java]    8: lload_1[31](1)
+[java]    9: lload_3[33](1)
+[java]   10: ladd[97](1)
+[java]   11: lstore[55](2) 5
+[java]   13: lload_1[31](1)
+[java]   14: lload_3[33](1)
+[java]   15: lcmp[148](1)
+[java]   16: ifle[158](3) -> iconst_0
+[java]   19: iconst_1[4](1)
+[java]   20: goto[167](3) -> ireturn
+[java]   23: iconst_0[3](1)
+[java]   24: ireturn[172](1)
+[java]
+
+[java] *******comp0012.target.DynamicVariableFolding*********
+
+[java] ...............optimizing method: 0 public void <init>()
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 3
+[java]    0: aload_0[42](1)
+[java]    1: invokespecial[183](3) 1
+[java]    4: return[177](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 3
+[java]    0: aload_0[42](1)
+[java]    1: invokespecial[183](3) 1
+[java]    4: return[177](1)
+[java]
+[java] **********************************
+[java] ...............optimizing method: 1 public int methodOne()
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 18
+[java]    0: bipush[16](2) 42
+[java]    2: istore_1[60](1)
+[java]    3: iload_1[27](1)
+[java]    4: sipush[17](3) 764
+[java]    7: iadd[96](1)
+[java]    8: iconst_3[6](1)
+[java]    9: imul[104](1)
+[java]   10: istore_2[61](1)
+[java]   11: iload_2[28](1)
+[java]   12: bipush[16](2) 67
+[java]   14: isub[100](1)
+[java]   15: istore_1[60](1)
+[java]   16: iload_2[28](1)
+[java]   17: sipush[17](3) 1234
+[java]   20: iadd[96](1)
+[java]   21: iload_1[27](1)
+[java]   22: isub[100](1)
+[java]   23: ireturn[172](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 18
+[java]    0: bipush[16](2) 42
+[java]    2: istore_1[60](1)
+[java]    3: iload_1[27](1)
+[java]    4: sipush[17](3) 764
+[java]    7: iadd[96](1)
+[java]    8: iconst_3[6](1)
+[java]    9: imul[104](1)
+[java]   10: istore_2[61](1)
+[java]   11: iload_2[28](1)
+[java]   12: bipush[16](2) 67
+[java]   14: isub[100](1)
+[java]   15: istore_1[60](1)
+[java]   16: iload_2[28](1)
+[java]   17: sipush[17](3) 1234
+[java]   20: iadd[96](1)
+[java]   21: iload_1[27](1)
+[java]   22: isub[100](1)
+[java]   23: ireturn[172](1)
+[java]
+[java] ...............optimizing method: 2 public boolean methodTwo()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 21
+[java]    0: sipush[17](3) 12345
+[java]    3: istore_1[60](1)
+[java]    4: ldc[18](2) 2
+[java]    6: istore_2[61](1)
+[java]    7: getstatic[178](3) 3
+[java]   10: iload_1[27](1)
+[java]   11: iload_2[28](1)
+[java]   12: if_icmpge[162](3) -> iconst_0
+[java]   15: iconst_1[4](1)
+[java]   16: goto[167](3) -> invokevirtual 4
+[java]   19: iconst_0[3](1)
+[java]   20: invokevirtual[182](3) 4
+[java]   23: iconst_0[3](1)
+[java]   24: istore_2[61](1)
+[java]   25: iload_1[27](1)
+[java]   26: iload_2[28](1)
+[java]   27: if_icmple[164](3) -> iconst_0
+[java]   30: iconst_1[4](1)
+[java]   31: goto[167](3) -> ireturn
+[java]   34: iconst_0[3](1)
+[java]   35: ireturn[172](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 21
+[java]    0: sipush[17](3) 12345
+[java]    3: istore_1[60](1)
+[java]    4: ldc[18](2) 2
+[java]    6: istore_2[61](1)
+[java]    7: getstatic[178](3) 3
+[java]   10: iload_1[27](1)
+[java]   11: iload_2[28](1)
+[java]   12: if_icmpge[162](3) -> iconst_0
+[java]   15: iconst_1[4](1)
+[java]   16: goto[167](3) -> invokevirtual 4
+[java]   19: iconst_0[3](1)
+[java]   20: invokevirtual[182](3) 4
+[java]   23: iconst_0[3](1)
+[java]   24: istore_2[61](1)
+[java]   25: iload_1[27](1)
+[java]   26: iload_2[28](1)
+[java]   27: if_icmple[164](3) -> iconst_0
+[java]   30: iconst_1[4](1)
+[java]   31: goto[167](3) -> ireturn
+[java]   34: iconst_0[3](1)
+[java]   35: ireturn[172](1)
+[java]
+[java] ...............optimizing method: 3 public int methodThree()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 18
+[java]    0: iconst_0[3](1)
+[java]    1: istore_1[60](1)
+[java]    2: iload_1[27](1)
+[java]    3: iconst_3[6](1)
+[java]    4: iadd[96](1)
+[java]    5: istore_2[61](1)
+[java]    6: iload_2[28](1)
+[java]    7: iconst_4[7](1)
+[java]    8: iadd[96](1)
+[java]    9: istore_1[60](1)
+[java]   10: iload_1[27](1)
+[java]   11: iconst_5[8](1)
+[java]   12: iadd[96](1)
+[java]   13: istore_2[61](1)
+[java]   14: iload_1[27](1)
+[java]   15: iload_2[28](1)
+[java]   16: imul[104](1)
+[java]   17: ireturn[172](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 18
+[java]    0: iconst_0[3](1)
+[java]    1: istore_1[60](1)
+[java]    2: iload_1[27](1)
+[java]    3: iconst_3[6](1)
+[java]    4: iadd[96](1)
+[java]    5: istore_2[61](1)
+[java]    6: iload_2[28](1)
+[java]    7: iconst_4[7](1)
+[java]    8: iadd[96](1)
+[java]    9: istore_1[60](1)
+[java]   10: iload_1[27](1)
+[java]   11: iconst_5[8](1)
+[java]   12: iadd[96](1)
+[java]   13: istore_2[61](1)
+[java]   14: iload_1[27](1)
+[java]   15: iload_2[28](1)
+[java]   16: imul[104](1)
+[java]   17: ireturn[172](1)
+[java]
+[java] ...............optimizing method: 4 public int methodFour()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 38
+[java]    0: ldc[18](2) 5
+[java]    2: istore_1[60](1)
+[java]    3: iload_1[27](1)
+[java]    4: sipush[17](3) 1234
+[java]    7: isub[100](1)
+[java]    8: istore_2[61](1)
+[java]    9: getstatic[178](3) 3
+[java]   12: ldc[18](2) 6
+[java]   14: iload_1[27](1)
+[java]   15: isub[100](1)
+[java]   16: i2d[135](1)
+[java]   17: ldc2_w[20](3) 7
+[java]   20: dmul[107](1)
+[java]   21: invokevirtual[182](3) 9
+[java]   24: iconst_0[3](1)
+[java]   25: istore_3[62](1)
+[java]   26: iload_3[29](1)
+[java]   27: bipush[16](2) 10
+[java]   29: if_icmpge[162](3) -> iconst_4
+[java]   32: getstatic[178](3) 3
+[java]   35: iload_2[28](1)
+[java]   36: iload_1[27](1)
+[java]   37: isub[100](1)
+[java]   38: iload_3[29](1)
+[java]   39: imul[104](1)
+[java]   40: invokevirtual[182](3) 10
+[java]   43: iinc[132](3) 3 1
+[java]   46: goto[167](3) -> iload_3
+[java]   49: iconst_4[7](1)
+[java]   50: istore_1[60](1)
+[java]   51: iload_1[27](1)
+[java]   52: iconst_2[5](1)
+[java]   53: iadd[96](1)
+[java]   54: istore_2[61](1)
+[java]   55: iload_1[27](1)
+[java]   56: iload_2[28](1)
+[java]   57: imul[104](1)
+[java]   58: ireturn[172](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 38
+[java]    0: ldc[18](2) 5
+[java]    2: istore_1[60](1)
+[java]    3: iload_1[27](1)
+[java]    4: sipush[17](3) 1234
+[java]    7: isub[100](1)
+[java]    8: istore_2[61](1)
+[java]    9: getstatic[178](3) 3
+[java]   12: ldc[18](2) 6
+[java]   14: iload_1[27](1)
+[java]   15: isub[100](1)
+[java]   16: i2d[135](1)
+[java]   17: ldc2_w[20](3) 7
+[java]   20: dmul[107](1)
+[java]   21: invokevirtual[182](3) 9
+[java]   24: iconst_0[3](1)
+[java]   25: istore_3[62](1)
+[java]   26: iload_3[29](1)
+[java]   27: bipush[16](2) 10
+[java]   29: if_icmpge[162](3) -> iconst_4
+[java]   32: getstatic[178](3) 3
+[java]   35: iload_2[28](1)
+[java]   36: iload_1[27](1)
+[java]   37: isub[100](1)
+[java]   38: iload_3[29](1)
+[java]   39: imul[104](1)
+[java]   40: invokevirtual[182](3) 10
+[java]   43: iinc[132](3) 3 1
+[java]   46: goto[167](3) -> iload_3
+[java]   49: iconst_4[7](1)
+[java]   50: istore_1[60](1)
+[java]   51: iload_1[27](1)
+[java]   52: iconst_2[5](1)
+[java]   53: iadd[96](1)
+[java]   54: istore_2[61](1)
+[java]   55: iload_1[27](1)
+[java]   56: iload_2[28](1)
+[java]   57: imul[104](1)
+[java]   58: ireturn[172](1)
+[java]
+
+[java] *******comp0012.target.SimpleFolding*********
+
+[java] ...............optimizing method: 0 public void <init>()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 3
+[java]    0: aload_0[42](1)
+[java]    1: invokespecial[183](3) 17
+[java]    4: return[177](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 3
+[java]    0: aload_0[42](1)
+[java]    1: invokespecial[183](3) 17
+[java]    4: return[177](1)
+[java]
+[java] ...............optimizing method: 1 public void simple()
+
+[java] **********************************
+[java] ******Instructions before: *******
+[java] **************************Count: 6
+[java]    0: getstatic[178](3) 12
+[java]    3: ldc[18](2) 24
+[java]    5: ldc[18](2) 8
+[java]    7: iadd[96](1)
+[java]    8: invokevirtual[182](3) 7
+[java]   11: return[177](1)
+[java]
+[java] **********************************
+[java] ******Instructions after**********
+[java] **************************Count: 4
+[java]    0: getstatic[178](3) 12
+[java]   -1: ldc[18](2) 27
+[java]    8: invokevirtual[182](3) 7
+[java]   11: return[177](1)
+[java]
+[java] **********************************
+
+
+	private boolean isLoadOp(Instruction instruction) {
+        if (instruction instanceof LDC) // loads int, float, String, Class from the constant pool onto the stack 
+            return true;
+        if (instruction instanceof LDC2_W) //loads long or double type into the stack
+            return true;
+        if (instruction instanceof ConstantPushInstruction) { //push instruction that produces a literal on the stack -- bytes, 
+            return true;
+        }
+        return false;
+    }
+
+    private int foldUnaryOperand(CPInstruction handle, Instruction operand, ConstantPoolGen cpgen) {
+        System.out.println(operand);
+        int index = -1;
+        if (operand instanceof I2L) {
+            int value = (Integer) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantLong((long) value), cpgen);
+        } else if (operand instanceof I2F) {
+            int value = (Integer) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantFloat((float) value), cpgen);
+        } else if (operand instanceof I2D) {
+            int value = (Integer) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantDouble((double) value), cpgen);
+        } else if (operand instanceof L2I) {
+            long value = (Long) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantInteger((int) value), cpgen);
+        } else if (operand instanceof L2F) {
+            long value = (Long) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantFloat((float) value), cpgen);
+        } else if (operand instanceof L2D) {
+            long value = (Long) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantDouble((double) value), cpgen);
+        } else if (operand instanceof D2F) {
+            double value = (Double) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantFloat((float) value), cpgen);
+        } else if (operand instanceof D2I) {
+            double value = (Double) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantInteger((int) value), cpgen);
+        } else if (operand instanceof D2L) {
+            double value = (Double) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantLong((long) value), cpgen);
+        } else if (operand instanceof F2D) {
+            float value = (Float) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantDouble((double) value), cpgen);
+        } else if (operand instanceof F2I) {
+            float value = (Float) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantInteger((int) value), cpgen);
+        } else if (operand instanceof F2L) {
+            float value = (Float) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantLong((long) value), cpgen);
+        } else if (operand instanceof INEG) {
+            int value = (int) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantInteger(0 - value), cpgen);
+        } else if (operand instanceof FNEG) {
+            float value = (float) loadDataValue((LDC) handle, cpgen);
+            index = cpgen.addConstant(new ConstantFloat(0.0f - value), cpgen);
+        } else if (operand instanceof DNEG) {
+            double value = (double) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantDouble(0.0 - value), cpgen);
+        } else if (operand instanceof LNEG) {
+            long value = (long) loadDataValue((LDC2_W) handle, cpgen);
+            index = cpgen.addConstant(new ConstantLong(0L - value), cpgen);
+        }
+        return index;
+    }
+
+
+	private int foldUnaryOperand(ConstantPushInstruction handle, Instruction operand, ConstantPoolGen cpgen) {
+        int idx = -1;
+        if (operand instanceof I2L || operand instanceof F2L || operand instanceof D2L) { // Convert int,float, double to long
+            long value = (long) handle.getValue();
+			idx = cpgen.addConstant(new ConstantLong(value), cpgen);
+		} else if (operand instanceof I2F || operand instanceof D2F || operand instanceof L2F) {
+            float value = (float) handle.getValue();
+            idx = cpgen.addConstant(new ConstantFloat(value), cpgen);
+		}  else if (operand instanceof I2D || operand instanceof F2D || operand instanceof L2D) {
+            double value = (double) handle.getValue();
+            idx = cpgen.addConstant(new ConstantDouble(value), cpgen);
+        } else if (operand instanceof L2I || operand instanceof F2I || operand instanceof D2I) {
+            int value = (int) handle.getValue();
+            idx = cpgen.addConstant(new ConstantInteger(value), cpgen);
+		} else if (operand instanceof INEG) {
+            int value = (int) handle.getValue();
+            idx = cpgen.addConstant(new ConstantInteger(0 - value), cpgen);
+        } else if (operand instanceof FNEG) {
+            float value = (float) handle.getValue();
+            idx = cpgen.addConstant(new ConstantFloat(0.0f - value), cpgen);
+        } else if (operand instanceof DNEG) {
+            double value = (double) handle.getValue();
+            idx = cpgen.addConstant(new ConstantDouble(0.0 - value), cpgen);
+        } else if (operand instanceof LNEG) {
+            long value = (long) handle.getValue();
+            idx = cpgen.addConstant(new ConstantLong(0L - value), cpgen);
+        }
+        return idx;
+	}
+
+    
+    private void setTarget(InstructionHandle from, InstructionHandle to, ConstantPoolGen cpgen, InstructionList insrtList) {
+        InstructionHandle[] handles = insrtList.getInstructionHandles();
+        for (InstructionHandle handle : handles) {
+            if (handle.getInstruction() instanceof InstructionTargeter) {
+                if (((InstructionTargeter) handle.getInstruction()).containsTarget(from)) {
+                    ((InstructionTargeter) handle.getInstruction()).updateTarget(from, to);
+                }
+            }
+        }
+    }
+    
+	private int findTargetIndex(InstructionHandle[] handles, InstructionHandle handle) {
+        for (int i = 0; i < handles.length; i++) {
+            if (handles[i].equals(handle))
+                return i;
+        }
+        return -1;
+    }
+
+
+    private boolean foldIfElseStatementUnary(InstructionHandle instructionHandle, int value, int index, InstructionHandle[] handles, ConstantPoolGen cpgen, InstructionList instructionList) {
+		//        System.out.println(index);
+		IfInstruction instruction = (IfInstruction) instructionHandle.getInstruction(); //Super class for the IFxxx family of instructions.
+		boolean flag = false;
+        if (instruction instanceof IFEQ && value == 0)
+            flag = true;
+        if (instruction instanceof IFGE && value >= 0)
+            flag = true;
+        if (instruction instanceof IFLE && value <= 0)
+            flag = true;
+        if (instruction instanceof IFGT && value > 0)
+            flag = true;
+        if (instruction instanceof IFLT && value < 0)
+            flag = true;
+        if (instruction instanceof IFNE && value != 0)
+            flag = true;
+
+		InstructionHandle ifTarget = instruction.getTarget();
+		
+		if (findTargetIndex(handles, ifTarget) < index) {
+			return false;
+		}
+		InstructionHandle gotoTarget = null;
+		if (ifTarget.getPrev().getInstruction() instanceof GotoInstruction) {
+			gotoTarget = ((GotoInstruction) ifTarget.getPrev().getInstruction()).getTarget();
+			if (findTargetIndex(handles, gotoTarget) < findTargetIndex(handles, ifTarget) - 1) {
+				return false;
+			}
+		}
+		if (flag) {
+			setTarget(handles[index - 1], ifTarget, cpgen, instructionList);
+			try {
+				instructionList.delete(handles[index - 1], ifTarget.getPrev());
+			} catch (TargetLostException e) {
+				System.out.println("target lost");
+			}
+		} else {
+			setTarget(handles[index - 1], handles[index + 1], cpgen, instructionList);
+			try {
+				instructionList.delete(handles[index - 1], handles[index]);
+				if (gotoTarget != null) {
+					instructionList.delete(ifTarget.getPrev(), gotoTarget.getPrev());
+				}
+			} catch (TargetLostException e) {
+				System.out.println("target lost");
+			}
+		}
+		return true;
+	}
+
+
+    	private boolean foldIfElseStatementBinary(IfInstruction instruction, int x, int y, int index, InstructionHandle[] handles, ConstantPoolGen cpgen, InstructionList instList) {
+        boolean flag = false;
+        if (instruction instanceof IF_ICMPEQ && x == y)
+            flag = true;
+        if (instruction instanceof IF_ICMPGE && x >= y)
+            flag = true;
+        if (instruction instanceof IF_ICMPLE && x <= y)
+            flag = true;
+        if (instruction instanceof IF_ICMPGT && x > y)
+            flag = true;
+        if (instruction instanceof IF_ICMPLT && x < y)
+            flag = true;
+        if (instruction instanceof IF_ICMPNE && x != y)
+            flag = true;
+        InstructionHandle ifTarget = instruction.getTarget();
+        if (findTargetIndex(handles, ifTarget) < index) {
+            return false;
+        }
+        InstructionHandle gotoTarget = null;
+        if (ifTarget.getPrev().getInstruction() instanceof GotoInstruction) {
+            gotoTarget = ((GotoInstruction) ifTarget.getPrev().getInstruction()).getTarget();
+            if (findTargetIndex(handles, gotoTarget) < findTargetIndex(handles, ifTarget) - 1) {
+                return false;
+            }
+        }
+        if (flag) {
+            setTarget(handles[index - 2], ifTarget, cpgen, instList);
+            try {
+                instList.delete(handles[index - 2], ifTarget.getPrev());
+            } catch (TargetLostException e) {
+                System.out.println("target lost");
+            }
+        } else {
+            setTarget(handles[index - 2], handles[index + 1], cpgen, instList);
+            try {
+                instList.delete(handles[index - 2], handles[index]);
+                if (gotoTarget != null) {
+                    instList.delete(ifTarget.getPrev(), gotoTarget.getPrev());
+                }
+            } catch (TargetLostException e) {
+                System.out.println("target lost");
+            }
+        }
+        return true;
+    }
+
+
+
+///////////////// Before arithmetic Instructions
+
+
+// //unary operand -- unary minus, NOT , INCREMENT, PRE-INCREMENT, DECREMENT, PREDECREMENT
+                // // Const Var method 2, Dynami Var method 4 passes thru if loop
+				// if (handles[i].getInstruction() instanceof ConversionInstruction || //Super class for the x2y family of instructions (eg I2F)
+				// /*
+				// Ref: https://asmsupport.github.io/doc/0.4/jvmref/ref-ineg.html
+				// */
+				// handles[i].getInstruction() instanceof INEG || //Negate int (Pops an int off the stack, negates it, and pushes the negated integer value back onto the stack. This is the same as multiplying the integer by -1.)
+				// handles[i].getInstruction() instanceof FNEG || // Negate float
+				// handles[i].getInstruction() instanceof DNEG ||
+				// handles[i].getInstruction() instanceof LNEG ) {
+                //     // nothing goes thru below if loop
+                //     if (isLoadOp(handles[i-1].getInstruction())) {
+				// 		int idx;
+				// 		isOptimised = false;
+				// 		if (handles[i-1].getInstruction() instanceof CPInstruction) {
+                //             System.out.println("CP INSTRUCTION"+ instructionList.toString());
+				// 			idx = foldUnaryOperand((CPInstruction) handles[i-1].getInstruction(), handles[i].getInstruction(), cpgen);
+				// 		}
+				// 		else {
+                //             System.out.println("CPI "+ instructionList.toString());
+				// 			idx = foldUnaryOperand((ConstantPushInstruction) handles[i - 1].getInstruction(), handles[i].getInstruction(), cpgen);
+				// 		}
+				// 		Instruction operand = handles[i].getInstruction();
+                //         if (operand instanceof I2L || operand instanceof F2L || operand instanceof D2L || operand instanceof I2D || operand instanceof F2D || operand instanceof L2D) {
+                //             instructionList.insert(handles[i], new LDC2_W(idx));
+                //         } else if (operand instanceof I2F || operand instanceof D2F || operand instanceof L2F || operand instanceof L2I || operand instanceof F2I || operand instanceof D2I) {
+                //             instructionList.insert(handles[i], new LDC(idx));
+                //         } else if (operand instanceof INEG || operand instanceof FNEG) {
+                //             instructionList.insert(handles[i], new LDC(idx));
+                //         } else if (operand instanceof DNEG || operand instanceof LNEG) {
+                //             instructionList.insert(handles[i], new LDC2_W(idx));
+                //         }
+				// 		setTarget(i - 1, i, cpgen, instructionList);
+                //         try {
+                //             // delete the old ones
+                //             instructionList.delete(handles[i]);
+                //             instructionList.delete(handles[i - 1]);
+                //         } catch (TargetLostException e) {
+                //             System.out.println("target lost");
+                //         }
+                //         break;	
+				// 	}
+				// }
+                // // Const Var method 4 passes through If loop
+				// // conditionals
+				// if (handles[i].getInstruction() instanceof IFEQ || handles[i].getInstruction() instanceof IFLE
+				// 	|| handles[i].getInstruction() instanceof IFGT || handles[i].getInstruction() instanceof IFLT
+				// 	|| handles[i].getInstruction() instanceof IFNE || handles[i].getInstruction() instanceof IFGE) {
+
+				// 	if (isLoadOp(handles[i].getInstruction())) {
+				// 		int value ;
+				// 		if (handles[i].getInstruction() instanceof ConstantPushInstruction) {
+				// 			value = (int) ((ConstantPushInstruction) handles[i-1].getInstruction()).getValue();
+				// 		}
+				// 		else {
+				// 			value = (int) ((LDC) handles[i-1].getInstruction()).getValue(cpgen);
+				// 		}
+				// 		if (foldIfElseStatementUnary(handles[i],value,i,handles,cpgen,instructionList)) {
+				// 			isOptimised = false;
+				// 		}
+				// 		break;
+				// 	}
+				// }
+
+				// binary operand 
+				// if (i==1) {
+                //     System.out.println("hello");
+				// 	continue;
+				// }
+
+///////////////////// After arithmetic instructions
+
+				/*
+				Both value1 and value2 must be of type int. They are both popped from the operand stack and compared. All comparisons are signed. The results of the comparison are as follows:
+
+					if_icmpeq succeeds if and only if value1 = value2
+					if_icmpne succeeds if and only if value1 ≠ value2
+					if_icmplt succeeds if and only if value1 < value2
+					if_icmple succeeds if and only if value1 ≤ value2
+					if_icmpgt succeeds if and only if value1 > value2
+					if_icmpge succeeds if and only if value1 ≥ value2
+				*/
+                // Constant Var folding method 3, Dynamic Var method 2 and 4 pass through below IF loop
+                if (handles[i].getInstruction() instanceof IF_ICMPEQ || handles[i].getInstruction() instanceof IF_ICMPGE
+                    || handles[i].getInstruction() instanceof IF_ICMPGT || handles[i].getInstruction() instanceof IF_ICMPLE
+                    || handles[i].getInstruction() instanceof IF_ICMPLT || handles[i].getInstruction() instanceof IF_ICMPNE) {
+                    // nothing pass through
+                    if ((handles[i - 1].getInstruction() instanceof LDC || handles[i - 1].getInstruction() instanceof ICONST)
+                        && (handles[i - 2].getInstruction() instanceof LDC || handles[i - 2].getInstruction() instanceof ICONST)) {
+                        int x, y;
+                        if (handles[i - 1].getInstruction() instanceof ConstantPushInstruction){
+                            y = (int) ((ConstantPushInstruction) handles[i - 1].getInstruction()).getValue();
+						}
+                        else {
+                            y = (int) ((LDC) handles[i - 1].getInstruction()).getValue(cpgen);
+						}
+                        if (handles[i - 2].getInstruction() instanceof ConstantPushInstruction) {
+                            x = (int) ((ConstantPushInstruction) handles[i - 2].getInstruction()).getValue();
+						}
+						else {
+                            x = (int) ((LDC) handles[i - 2].getInstruction()).getValue(cpgen);
+                        } 
+						if (foldIfElseStatementBinary((IfInstruction) handles[i].getInstruction(), x, y, i, handles, cpgen, instructionList)) {
+                            isOptimised = false;
+						}
+                        break;
+					}
+				}
