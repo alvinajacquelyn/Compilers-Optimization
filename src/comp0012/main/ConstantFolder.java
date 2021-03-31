@@ -43,22 +43,6 @@ public class ConstantFolder
 		}
 	}
 
-	// private void setTarget(int from, int to, ConstantPoolGen cpgen, InstructionList insrtList) {
-    //     System.out.println("\nUnder the function setTarget:");
-    //     InstructionHandle[] handles = insrtList.getInstructionHandles();
-    //     for (InstructionHandle handle : handles) {
-    //         System.out.println("handle : " + handle);
-    //         if (handle.getInstruction() instanceof InstructionTargeter) {
-    //             System.out.println("yes");
-    //             if (((InstructionTargeter) handle.getInstruction()).containsTarget(handles[from])) { //Checks whether this targeter targets the specified instruction handle
-    //                 ((InstructionTargeter) handle.getInstruction()).updateTarget(handles[from], handles[to]); //Replaces the target of this targeter from this old handle to the new handle.
-    //             }
-    //         }
-
-    //     }
-    // }
-
-
     private Number loadDataValue(LDC2_W handle, ConstantPoolGen cpgen) {
         return handle.getValue(cpgen);
     }
