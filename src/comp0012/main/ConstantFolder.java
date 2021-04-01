@@ -165,7 +165,7 @@ public class ConstantFolder
 		} else if (handle.getInstruction() instanceof LDC)
 		{
 			return (int) ((LDC)(handle.getInstruction())).getValue(cpgen);
-		} else if (handle.getInstruction() instanceof ILOAD)
+		} else if (handle.getInstruction() instanceof ILOAD) //Load int from local variable onto stack
 		{
 			int load_index = (int) ((ILOAD)(handle.getInstruction())).getIndex();
         	int value = getLoadIntValue(handle, instList,cpgen,load_index);
@@ -373,8 +373,9 @@ public class ConstantFolder
 	private void optimizeArithmetic (InstructionHandle handle, InstructionList instList, ClassGen cgen, ConstantPoolGen cpgen)
 	{ 
 		//optimising arithmetic for integers
-		if (handle.getInstruction() instanceof IADD || handle.getInstruction() instanceof ISUB || handle.getInstruction() instanceof IMUL ||handle.getInstruction() instanceof IDIV || handle.getInstruction() instanceof IREM)
+		if (handle.getInstruction() instanceof IADD || handle.getInstruction() instanceof ISUB || handle.getInstruction() instanceof IMUL ||handle.getInstruction() instanceof IDIV)
 		{
+			System.out.println(".............optimising arithmetic for integers\n");
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
 			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
 			//Searching for the values
@@ -385,10 +386,14 @@ public class ConstantFolder
 			if (handle.getInstruction() instanceof ISUB){val = value2-value1;}
 			if (handle.getInstruction() instanceof IMUL){val = value2*value1;}
 			if (handle.getInstruction() instanceof IDIV){val = value2/value1;}
-			if (handle.getInstruction() instanceof IREM){val = value2%value1;}
 			
         	//adding the values - LDC pushes the int value onto the stack 
         	instList.insert(handle, new LDC(cgen.getConstantPool().addInteger(val)));
+			/*
+			The value on the top of the operand stack must be of type D/F/L. 
+			It is popped from the operand stack and undergoes value set conversion (§2.8.3), resulting in value'. 
+			Then value' is converted to an int result. This result is pushed onto the operand stack:
+			*/
         	if(handle_to_delete_1.getInstruction() instanceof D2I || handle_to_delete_1.getInstruction() instanceof F2I || handle_to_delete_1.getInstruction() instanceof L2I)
 			{
 				delete_handles(instList, handle, handle_to_delete_1, null);
@@ -397,8 +402,9 @@ public class ConstantFolder
 			}
 		}
 		//optimising arithmetic for longs
-		if (handle.getInstruction() instanceof LADD || handle.getInstruction() instanceof LSUB || handle.getInstruction() instanceof LMUL ||handle.getInstruction() instanceof LDIV || handle.getInstruction() instanceof LREM)
+		if (handle.getInstruction() instanceof LADD || handle.getInstruction() instanceof LSUB || handle.getInstruction() instanceof LMUL ||handle.getInstruction() instanceof LDIV)
 		{
+			System.out.println(".............optimising arithmetic for longs");
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
 			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
 			//Searching for the values
@@ -409,7 +415,6 @@ public class ConstantFolder
 			if (handle.getInstruction() instanceof LSUB){val = value2-value1;}
 			if (handle.getInstruction() instanceof LMUL){val = value2*value1;}
 			if (handle.getInstruction() instanceof LDIV){val = value2/value1;}
-			if (handle.getInstruction() instanceof LREM){val = value2%value1;}  
 			
 		    instList.insert(handle, new LDC2_W(cgen.getConstantPool().addLong(val)));
 		    if(handle_to_delete_1.getInstruction() instanceof I2L || handle_to_delete_1.getInstruction() instanceof F2L || handle_to_delete_1.getInstruction() instanceof D2L)
@@ -421,8 +426,10 @@ public class ConstantFolder
 		}
 
 		//optimising arithmetic for Floats
-		if (handle.getInstruction() instanceof FADD || handle.getInstruction() instanceof FSUB || handle.getInstruction() instanceof FMUL ||handle.getInstruction() instanceof FDIV || handle.getInstruction() instanceof FREM)
+		if (handle.getInstruction() instanceof FADD || handle.getInstruction() instanceof FSUB || handle.getInstruction() instanceof FMUL ||handle.getInstruction() instanceof FDIV)
 		{
+			System.out.println(".............optimising arithmetic for floats");
+
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
 			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
 			//Searching for the values
@@ -433,7 +440,6 @@ public class ConstantFolder
 			if (handle.getInstruction() instanceof FSUB){val = value2-value1;}
 			if (handle.getInstruction() instanceof FMUL){val = value2*value1;}
 			if (handle.getInstruction() instanceof FDIV){val = value2/value1;}
-			if (handle.getInstruction() instanceof FREM){val = value2%value1;}	
 			
 		    instList.insert(handle, new LDC(cgen.getConstantPool().addFloat(val)));
 		    if(handle_to_delete_1.getInstruction() instanceof I2F || handle_to_delete_1.getInstruction() instanceof D2F || handle_to_delete_1.getInstruction() instanceof L2F)
@@ -445,8 +451,9 @@ public class ConstantFolder
 		}
 
 		//optimising arithmetic for doubles
-		if (handle.getInstruction() instanceof DADD || handle.getInstruction() instanceof DSUB || handle.getInstruction() instanceof DMUL ||handle.getInstruction() instanceof DDIV || handle.getInstruction() instanceof DREM)
+		if (handle.getInstruction() instanceof DADD || handle.getInstruction() instanceof DSUB || handle.getInstruction() instanceof DMUL ||handle.getInstruction() instanceof DDIV )
 		{
+			System.out.println(".............optimising arithmetic for doubles");
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
 			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
 			//Searching for the values
@@ -457,7 +464,6 @@ public class ConstantFolder
 			if (handle.getInstruction() instanceof DSUB){val = value2-value1;}
 			if (handle.getInstruction() instanceof DMUL){val = value2*value1;}
 			if (handle.getInstruction() instanceof DDIV){val = value2/value1;}
-			if (handle.getInstruction() instanceof DREM){val = value2%value1;} 
 			
 		    instList.insert(handle, new LDC2_W(cgen.getConstantPool().addDouble(val)));			
 			if (handle_to_delete_1.getInstruction() instanceof I2D || handle_to_delete_1.getInstruction() instanceof F2D || handle_to_delete_1.getInstruction() instanceof L2D)
@@ -466,6 +472,15 @@ public class ConstantFolder
 			} else {
 				delete_handles(instList, handle,handle_to_delete_1, handle_to_delete_2);
 			}
+		}
+	}
+
+	public void printInstructions(ClassGen classGen,ConstantPoolGen constPoolGen){
+		Method[] methods = classGen.getMethods();
+		for (Method method : methods) {
+			MethodGen methodGen = new MethodGen(method, classGen.getClassName(), constPoolGen);
+			System.out.println(classGen.getClassName() + " > " + method.getName());
+			System.out.println(methodGen.getInstructionList());
 		}
 	}
 	
@@ -489,11 +504,12 @@ public class ConstantFolder
 		// Initialise a method generator with the original method as the baseline
 		MethodGen methodGen = new MethodGen(method, cgen.getClassName(), cpgen);        
 		Method newMethod = methodGen.getMethod();
-        System.out.println("**********************************");
-        System.out.println("******Instructions before: *******");
-        System.out.println("**************************Count: "+instList.getLength()); 
-		System.out.println(instList.toString());
-        System.out.println("**********************************");
+		methodGen.removeNOPs();
+        // System.out.println("**********************************");
+        // System.out.println("******Instructions before: *******");
+        // System.out.println("**************************Count: "+instList.getLength()); 
+		// System.out.println(instList.toString());
+        // System.out.println("**********************************");
 		//<name of opcode> "["<opcode number>"]" "("<length of instruction>")"
 		// InstructionHandle is a wrapper for actual Instructions
 		for (InstructionHandle handle : instList.getInstructionHandles()) {
@@ -514,9 +530,9 @@ public class ConstantFolder
 			// replace the method in the original class
 			cgen.replaceMethod(method, newMethod);
 		}
-		System.out.println("******Instructions after**********");
-		System.out.println("**************************Count: "+instList.getLength()); 
-		System.out.println(instList.toString());
+		// System.out.println("******Instructions after**********");
+		// System.out.println("**************************Count: "+instList.getLength()); 
+		// System.out.println(instList.toString());
 	}
 
 	
@@ -539,12 +555,14 @@ public class ConstantFolder
 		ConstantPoolGen cpgen = cgen.getConstantPool();
 
 		// Implement your optimization here
-		System.out.printf("*******%s*********\n",cgen.getClassName());
-
+		// System.out.printf("*******%s*********\n",cgen.getClassName());
+		printInstructions(cgen, cpgen);
         Method[] methods = cgen.getMethods();
 		for (Method m : methods) {
 			optimizeMethod(cgen, cpgen, m);
 		}
+		printInstructions(cgen, cpgen);
+
 	    cgen.setMajor(50);
 
 		this.optimized = gen.getJavaClass();
