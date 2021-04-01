@@ -138,7 +138,7 @@ public class ConstantFolder
 		//optimising arithmetic for integers
 		if (handle.getInstruction() instanceof IADD || handle.getInstruction() instanceof ISUB || handle.getInstruction() instanceof IMUL ||handle.getInstruction() instanceof IDIV)
 		{
-			System.out.println(".............optimising arithmetic for integers\n");
+			System.out.println(".............optimising arithmetic for integer");
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
 			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
 			//Searching for the values
@@ -273,7 +273,6 @@ public class ConstantFolder
         System.out.println("******Instructions before: *******");
         System.out.println("**************************Count: "+instList.getLength()); 
 		System.out.println(instList.toString());
-        System.out.println("**********************************");
 		//<name of opcode> "["<opcode number>"]" "("<length of instruction>")"
 		// InstructionHandle is a wrapper for actual Instructions
 		for (InstructionHandle handle : instList.getInstructionHandles()) {
@@ -294,6 +293,7 @@ public class ConstantFolder
 			// replace the method in the original class
 			cgen.replaceMethod(method, newMethod);
 		}
+		System.out.println("**********************************");
 		System.out.println("******Instructions after**********");
 		System.out.println("**************************Count: "+instList.getLength()); 
 		System.out.println(instList.toString());

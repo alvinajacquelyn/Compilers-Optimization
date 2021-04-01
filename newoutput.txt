@@ -1,4 +1,4 @@
-     [java] Running COMP207p courswork-2
+    [java] Running COMP207p courswork-2
      [java] *******comp0012.target.ConstantVariableFolding*********
      [java] **********************************
      [java] ******Instructions before: *******
@@ -32,15 +32,11 @@
      [java]   17: isub[100](1)
      [java]   18: ireturn[172](1)
      [java]
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
      [java] **********************************
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
      [java] ******Instructions after**********
      [java] **************************Count: 6
      [java]    0: bipush[16](2) 62
@@ -49,7 +45,7 @@
      [java]    5: istore_2[61](1)
      [java]    6: ldc[18](2) 28
      [java]    8: ireturn[172](1)
-     [java] 
+     [java]
      [java] **********************************
      [java] ******Instructions before: *******
      [java] **************************Count: 9
@@ -63,8 +59,8 @@
      [java]    9: dadd[99](1)
      [java]   10: dreturn[175](1)
      [java]
-     [java] **********************************
      [java] .............optimising arithmetic for doubles
+     [java] **********************************
      [java] ******Instructions after**********
      [java] **************************Count: 7
      [java]    0: ldc2_w[20](3) 2
@@ -124,9 +120,9 @@
      [java]   20: goto[167](3) -> ireturn
      [java]   23: iconst_0[3](1)
      [java]   24: ireturn[172](1)
-     [java]
-     [java] **********************************
+     [java] 
      [java] .............optimising arithmetic for longs
+     [java] **********************************
      [java] ******Instructions after**********
      [java] **************************Count: 14
      [java]    0: ldc2_w[20](3) 5
@@ -181,17 +177,12 @@
      [java]   22: isub[100](1)
      [java]   23: ireturn[172](1)
      [java]
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
      [java] **********************************
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
      [java] ******Instructions after**********
      [java] **************************Count: 8
      [java]    0: bipush[16](2) 42
@@ -252,7 +243,7 @@
      [java]   31: goto[167](3) -> ireturn
      [java]   34: iconst_0[3](1)
      [java]   35: ireturn[172](1)
-     [java] 
+     [java]
      [java] **********************************
      [java] ******Instructions before: *******
      [java] **************************Count: 18
@@ -275,15 +266,11 @@
      [java]   16: imul[104](1)
      [java]   17: ireturn[172](1)
      [java]
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
      [java] **********************************
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
      [java] ******Instructions after**********
      [java] **************************Count: 10
      [java]    0: iconst_0[3](1)
@@ -339,20 +326,14 @@
      [java]   57: imul[104](1)
      [java]   58: ireturn[172](1)
      [java]
-     [java] **********************************
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
      [java] .............optimising arithmetic for doubles
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java]
-     [java] .............optimising arithmetic for integers
-     [java] 
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] .............optimising arithmetic for integer
+     [java] **********************************
      [java] ******Instructions after**********
      [java] **************************Count: 24
      [java]    0: ldc[18](2) 5
@@ -405,9 +386,8 @@
      [java]    8: invokevirtual[182](3) 7
      [java]   11: return[177](1)
      [java]
+     [java] .............optimising arithmetic for integer
      [java] **********************************
-     [java] .............optimising arithmetic for integers
-     [java]
      [java] ******Instructions after**********
      [java] **************************Count: 4
      [java]    0: getstatic[178](3) 12
