@@ -319,7 +319,7 @@ public class ConstantFolder
 		ConstantPoolGen cpgen = cgen.getConstantPool();
 
 		// Implement your optimization here
-		// System.out.printf("*******%s*********\n",cgen.getClassName());
+		System.out.printf("*******%s*********\n",cgen.getClassName());
 		// System.out.println("Before: \n\n");
 		// printInstructions(cgen, cpgen);
         Method[] methods = cgen.getMethods();
