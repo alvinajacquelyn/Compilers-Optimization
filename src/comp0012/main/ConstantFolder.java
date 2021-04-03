@@ -9,13 +9,8 @@ import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Code;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
-import org.apache.bcel.generic.ClassGen;
-import org.apache.bcel.generic.ConstantPoolGen;
-import org.apache.bcel.generic.InstructionHandle;
-import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.util.InstructionFinder;
-import org.apache.bcel.generic.MethodGen;
-import org.apache.bcel.generic.TargetLostException;
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -55,12 +50,22 @@ public class ConstantFolder
 	 * GET PREVIOUS VALUES 
 	**/
 	/** ****************************************************************************************************************** **/
+	//This will also recognize BIPUSH and SIPUSH int values
 	private int getPrevInt(InstructionHandle handle, InstructionList instList, ConstantPoolGen cpgen)
 	{
 		if (handle.getInstruction() instanceof LDC)
 		{
 			return (int) ((LDC)(handle.getInstruction())).getValue(cpgen);
-		} else
+		} 
+		else if (handle.getInstruction() instanceof BIPUSH) 
+		{
+			return (int) ((BIPUSH)(handle.getInstruction())).getValue();
+		} 
+		else if (handle.getInstruction() instanceof SIPUSH) 
+		{
+			return (int) ((SIPUSH)(handle.getInstruction())).getValue();
+		}
+		else
 		{
 			return 0;
 		}
@@ -72,7 +77,7 @@ public class ConstantFolder
 		{
 			return (long) ((LDC2_W)(handle.getInstruction())).getValue(cpgen);
 
-		} else {
+		}	else {
 			return 0;
 		}
 	}
@@ -220,6 +225,107 @@ public class ConstantFolder
 		}
 	}
 
+
+	private void optimizeComparisons (InstructionHandle handle, InstructionList instList, ClassGen cgen, ConstantPoolGen cpgen)
+	{ 
+		
+		//optimising comparisons for integers
+		if (handle.getInstruction() instanceof IF_ICMPEQ || handle.getInstruction() instanceof IF_ICMPNE || handle.getInstruction() instanceof IF_ICMPLT || handle.getInstruction() instanceof IF_ICMPGE || handle.getInstruction() instanceof IF_ICMPGT || handle.getInstruction() instanceof IF_ICMPLE)
+		{
+			System.out.println(".............optimising comparisons for integer");
+			InstructionHandle handle1 = handle.getPrev(); 
+			InstructionHandle handle2 = handle.getPrev().getPrev();
+
+			//Searching for the values
+			Integer value1 = getPrevInt(handle.getPrev(), instList, cpgen);
+			Integer value2 = getPrevInt(handle.getPrev().getPrev(), instList, cpgen);
+			boolean val = false;
+			if (handle.getInstruction() instanceof IF_ICMPEQ){val = value1.equals(value2);}
+			if (handle.getInstruction() instanceof IF_ICMPNE){val = !value1.equals(value2);}
+			if (handle.getInstruction() instanceof IF_ICMPLT){val = (value1.compareTo(value2) < 0);}
+			if (handle.getInstruction() instanceof IF_ICMPGE){val = (value1.compareTo(value2) >= 0);}
+			if (handle.getInstruction() instanceof IF_ICMPGT){val = (value1.compareTo(value2) > 0);}
+			if (handle.getInstruction() instanceof IF_ICMPLE){val = (value1.compareTo(value2) <= 0);}
+			
+			//removes the prior iloads and IF_ICMP<cond> instructions from the stack - and pushes a GOTO instead
+			if (val) {
+				handle.setInstruction(new GOTO(((IfInstruction) handle.getInstruction()).getTarget()));
+				instList.redirectBranches(handle2, handle);
+				try {
+					instList.delete(handle2, handle1);
+				} catch (TargetLostException e) {
+					e.printStackTrace();
+				}
+			} else {
+				instList.redirectBranches(handle2, handle.getNext());
+				try {
+					instList.delete(handle2, handle);
+				} catch (TargetLostException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+		
+		//optimising comparisons for longs
+		if (handle.getInstruction() instanceof LCMP)
+		{
+			System.out.println(".............optimising comparisons for longs");
+			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
+			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
+			//Searching for the values
+			long value1 = getPrevLong(handle.getPrev(), instList, cpgen);
+			long value2 = getPrevLong(handle.getPrev().getPrev(), instList, cpgen);
+			long val = 0;
+			if (handle.getInstruction() instanceof LCMP){val = (value1 < value2 ? -1 : (value1 == value2 ? 0 : 1));}
+			
+		    instList.insert(handle, new LDC2_W(cgen.getConstantPool().addLong(val)));
+
+			delete_handles(instList, handle, handle_to_delete_1, handle_to_delete_2);
+
+		}
+
+		//optimising comparison for Floats
+		if (handle.getInstruction() instanceof FCMPG || handle.getInstruction() instanceof FCMPL)
+		{
+			System.out.println(".............optimising comparisons for floats");
+
+			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
+			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
+			//Searching for the values
+			float value1 = getPrevFloat(handle.getPrev(), instList, cpgen);
+			float value2 = getPrevFloat(handle.getPrev().getPrev(), instList, cpgen);
+			float val = 0;
+			if (handle.getInstruction() instanceof FCMPG){val = (value1 < value2 ? -1 : (value1 == value2 ? 0 : 1));}
+			if (handle.getInstruction() instanceof FCMPL){val = (value1 < value2 ? -1 : (value1 == value2 ? 0 : 1));}
+			
+		    instList.insert(handle, new LDC(cgen.getConstantPool().addFloat(val)));
+
+			delete_handles(instList, handle ,handle_to_delete_1, handle_to_delete_2);
+
+		}
+
+		//optimising comparisons for doubles
+		if (handle.getInstruction() instanceof DCMPG || handle.getInstruction() instanceof DCMPL)
+		{
+			System.out.println(".............optimising comparisons for doubles");
+			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
+			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
+			//Searching for the values
+			double value1 = getPrevDouble(handle.getPrev(), instList, cpgen);
+			double value2 = getPrevDouble(handle.getPrev().getPrev(), instList, cpgen);
+			double val = 0;
+			if (handle.getInstruction() instanceof DCMPG){val = (value1 < value2 ? -1 : (value1 == value2 ? 0 : 1));}
+			if (handle.getInstruction() instanceof DCMPL){val = (value1 < value2 ? -1 : (value1 == value2 ? 0 : 1));}
+			
+		    instList.insert(handle, new LDC2_W(cgen.getConstantPool().addDouble(val)));			
+
+			delete_handles(instList, handle,handle_to_delete_1, handle_to_delete_2);
+		}
+	}
+
+
+
 	public void printInstructions(ClassGen classGen,ConstantPoolGen constPoolGen){
 		getNumberConstant(constPoolGen);
 		Method[] methods = classGen.getMethods();
@@ -277,7 +383,7 @@ public class ConstantFolder
 		// InstructionHandle is a wrapper for actual Instructions
 		for (InstructionHandle handle : instList.getInstructionHandles()) {
 			optimizeArithmetic(handle, instList, cgen, cpgen);	            
-			// optimizeComparisons(handle, instList, cgen, cpgen);
+			optimizeComparisons(handle, instList, cgen, cpgen);
 			
 			// set max stack/local
 			methodGen.setMaxStack();
@@ -324,6 +430,7 @@ public class ConstantFolder
 		// printInstructions(cgen, cpgen);
         Method[] methods = cgen.getMethods();
 		for (Method m : methods) {
+			System.out.println("...........optimizing method: " + m.getName());
 			optimizeMethod(cgen, cpgen, m);
 		}
 		// System.out.println("After: \n\n");
