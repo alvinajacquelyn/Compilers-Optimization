@@ -430,6 +430,7 @@ public class ConstantFolder
 
 	private void handleVariableLoads(InstructionHandle iHandle, Hashtable<String, Object> variables, InstructionList instList, ConstantPoolGen cpgen)
 	{
+		//INTEGERS
 		if (iHandle.getInstruction() instanceof ILOAD)
 		{
 			ILOAD var = (ILOAD) iHandle.getInstruction();
@@ -439,6 +440,60 @@ public class ConstantFolder
 				{
 					System.out.println("...............optimising constant folding for integers");
 					instList.insert(iHandle, new PUSH(cpgen, (int) val));
+					try {
+						instList.delete(iHandle);
+					} catch (TargetLostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+		}
+		//LONGS
+		if (iHandle.getInstruction() instanceof LLOAD)
+		{
+			LLOAD var = (LLOAD) iHandle.getInstruction();
+			String key = "L"+var.getIndex();
+			Object val = variables.get(key);
+			if (val != null)
+				{
+					System.out.println("...............optimising constant folding for longs");
+					instList.insert(iHandle, new PUSH(cpgen, (long) val));
+					try {
+						instList.delete(iHandle);
+					} catch (TargetLostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+		}
+		//FLOATS
+		if (iHandle.getInstruction() instanceof FLOAD)
+		{
+			FLOAD var = (FLOAD) iHandle.getInstruction();
+			String key = "F"+var.getIndex();
+			Object val = variables.get(key);
+			if (val != null)
+				{
+					System.out.println("...............optimising constant folding for floats");
+					instList.insert(iHandle, new PUSH(cpgen, (float) val));
+					try {
+						instList.delete(iHandle);
+					} catch (TargetLostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+		}
+		//DOUBLES
+		if (iHandle.getInstruction() instanceof DLOAD)
+		{
+			DLOAD var = (DLOAD) iHandle.getInstruction();
+			String key = "D"+var.getIndex();
+			Object val = variables.get(key);
+			if (val != null)
+				{
+					System.out.println("...............optimising constant folding for doubles");
+					instList.insert(iHandle, new PUSH(cpgen, (double) val));
 					try {
 						instList.delete(iHandle);
 					} catch (TargetLostException e) {
@@ -538,24 +593,24 @@ public class ConstantFolder
 		cgen.replaceMethod(method, newMethod);
 		instList = new InstructionList(newMethod.getCode().getCode());
 
-		// for (InstructionHandle handle : instList.getInstructionHandles()) {
-		// 	optimizeArithmetic(handle, instList, cgen, cpgen);	            
-		// 	optimizeComparisons(handle, instList, cgen, cpgen);
+		for (InstructionHandle handle : instList.getInstructionHandles()) {
+			optimizeArithmetic(handle, instList, cgen, cpgen);	            
+			optimizeComparisons(handle, instList, cgen, cpgen);
 			
-		// 	// set max stack/local
-		// 	methodGen.setMaxStack();
-		// 	methodGen.setMaxLocals();
+			// set max stack/local
+			methodGen.setMaxStack();
+			methodGen.setMaxLocals();
 				
-		// 	methodGen.setInstructionList(instList);
+			methodGen.setInstructionList(instList);
 				
-		// 	// remove local variable table
-		// 	methodGen.removeLocalVariables();
+			// remove local variable table
+			methodGen.removeLocalVariables();
 	
-		// 	// generate the new method with replaced instList
-		// 	newMethod = methodGen.getMethod();
-		// 	// replace the method in the original class
-		// 	cgen.replaceMethod(method, newMethod);
-		// }
+			// generate the new method with replaced instList
+			newMethod = methodGen.getMethod();
+			// replace the method in the original class
+			cgen.replaceMethod(method, newMethod);
+		}
 		System.out.println("**********************************");
 		System.out.println("******Instructions after**********");
 		System.out.println("**************************Count: "+instList.getLength()); 
