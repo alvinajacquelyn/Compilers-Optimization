@@ -6,12 +6,17 @@ import java.io.IOException;
 import java.nio.file.attribute.DosFileAttributeView;
 import java.util.Iterator;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.Code;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.util.InstructionFinder;
+import org.hamcrest.core.IsInstanceOf;
 
+import java_cup.runtime.double_token;
+import java_cup.runtime.float_token;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -346,56 +351,104 @@ public class ConstantFolder
 		// Stores current values of all variables, where the key is the variable type + index
 		// e.g. I1 = 23; L2 = 2323232323434
 		for (InstructionHandle iHandle : instList.getInstructionHandles()) {
-			// INTEGERS
-			if (iHandle.getInstruction() instanceof ISTORE)
+			if(handleVariableStores(iHandle, variables, instList, cpgen))
 			{
-				ISTORE var = ((ISTORE) iHandle.getInstruction());
-				String key = "I"+var.getIndex();
-				variables.put(key, getPrevInt(iHandle.getPrev(), instList, cpgen));
-				// if (variables.get(key) != null)
-				// {
-				// }
+				continue;
 			}
-			// LONGS
-			if (iHandle.getInstruction() instanceof LSTORE)
-			{
-				LSTORE var = ((LSTORE) iHandle.getInstruction());
-				String key = "L"+var.getIndex();
-				variables.put(key, getPrevLong(iHandle.getPrev(), instList, cpgen));
-			}
-			// FLOATS 
-			if (iHandle.getInstruction() instanceof FSTORE)
-			{
-				FSTORE var = ((FSTORE) iHandle.getInstruction());
-				String key = "F"+var.getIndex();
-				variables.put(key, getPrevFloat(iHandle.getPrev(), instList, cpgen));
-			}
-			// DOUBLES 
-			if (iHandle.getInstruction() instanceof DSTORE)
-			{
-				DSTORE var = ((DSTORE) iHandle.getInstruction());
-				String key = "D"+var.getIndex();
-				variables.put(key, getPrevDouble(iHandle.getPrev(), instList, cpgen));
-			}
+			handleVariableLoads(iHandle, variables, instList, cpgen);
 		}
 		System.out.println(variables);
 	}
 
-	private HashSet<Integer> getLocalVariableIndices(InstructionList instructions)
+	private boolean handleVariableStores(InstructionHandle iHandle, Hashtable<String, Object> variables, InstructionList instList, ConstantPoolGen cpgen)
 	{
-		// gets indices of int, long ,float and double
-		HashSet<Integer> indices = new HashSet<Integer>();
-		InstructionFinder instructionFinder = new InstructionFinder(instructions);
-		Iterator itr = instructionFinder.search("StoreInstruction");
-		while(itr.hasNext())
+		// TODO Might need to add an option for IINC
+		// Takes care of modifying values of current variables if they can be "decided", returns true if a storing instruction occurs to ommit unnecessary calculations
+		// INTEGERS
+		if (iHandle.getInstruction() instanceof ISTORE)
 		{
-			InstructionHandle[] instructionHandles = (InstructionHandle[])itr.next();
-			System.out.println(instructionHandles);
-			StoreInstruction storeInstruction = (StoreInstruction)(instructionHandles[0].getInstruction());
-			indices.add(storeInstruction.getIndex());
+			ISTORE var = ((ISTORE) iHandle.getInstruction());
+			String key = "I"+var.getIndex();
+			Object val = ValueGetter.getPrevInt(iHandle.getPrev(), instList, cpgen);
+			if (val != null)
+			{
+				variables.put(key, (int) val);
+			}
+			else if (variables.get(key) != null)
+			{
+				variables.remove(key);
+			}
+			// if (variables.get(key) != null)
+			// {
+			// }
+			return true;
 		}
-		return indices;
+		// LONGS
+		if (iHandle.getInstruction() instanceof LSTORE)
+		{
+			LSTORE var = ((LSTORE) iHandle.getInstruction());
+			String key = "L"+var.getIndex();
+			Object val = ValueGetter.getPrevLong(iHandle.getPrev(), instList, cpgen);
+			if (val != null)
+				variables.put(key, (long) val);
+			else if (variables.get(key) != null)
+			{
+				variables.remove(key);
+			}
+			return true;
+		}
+		// FLOATS 
+		if (iHandle.getInstruction() instanceof FSTORE)
+		{
+			FSTORE var = ((FSTORE) iHandle.getInstruction());
+			String key = "F"+var.getIndex();
+			Object val = ValueGetter.getPrevFloat(iHandle.getPrev(), instList, cpgen);
+			if (val != null)
+				variables.put(key, (float) val);
+			else if (variables.get(key) != null)
+			{
+				variables.remove(key);
+			}
+			return true;
+		}
+		// DOUBLES 
+		if (iHandle.getInstruction() instanceof DSTORE)
+		{
+			DSTORE var = ((DSTORE) iHandle.getInstruction());
+			String key = "D"+var.getIndex();
+			Object val = ValueGetter.getPrevDouble(iHandle.getPrev(), instList, cpgen);
+			if (val != null)
+				variables.put(key, (double) val);
+			else if (variables.get(key) != null)
+			{
+				variables.remove(key);
+			}
+			return true;
+		}
+		return false;
 	}
+
+	private void handleVariableLoads(InstructionHandle iHandle, Hashtable<String, Object> variables, InstructionList instList, ConstantPoolGen cpgen)
+	{
+		if (iHandle.getInstruction() instanceof ILOAD)
+		{
+			ILOAD var = (ILOAD) iHandle.getInstruction();
+			String key = "I"+var.getIndex();
+			Object val = variables.get(key);
+			if (val != null)
+				{
+					System.out.println("...............optimising constant folding for integers");
+					instList.insert(iHandle, new PUSH(cpgen, (int) val));
+					try {
+						instList.delete(iHandle);
+					} catch (TargetLostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+		}
+	}
+
 	// ------------------------------------------------
 
 
@@ -467,25 +520,42 @@ public class ConstantFolder
 		System.out.println(instList.toString());
 		//<name of opcode> "["<opcode number>"]" "("<length of instruction>")"
 		// InstructionHandle is a wrapper for actual Instructions
+
+		// OPTIMISE VARIABLES
 		optimiseVariables(newMethod, instList, cgen, cpgen);
-		for (InstructionHandle handle : instList.getInstructionHandles()) {
-			optimizeArithmetic(handle, instList, cgen, cpgen);	            
-			optimizeComparisons(handle, instList, cgen, cpgen);
+		// set max stack/local
+		methodGen.setMaxStack();
+		methodGen.setMaxLocals();
 			
-			// set max stack/local
-			methodGen.setMaxStack();
-			methodGen.setMaxLocals();
+		methodGen.setInstructionList(instList);
+			
+		// remove local variable table
+		methodGen.removeLocalVariables();
+
+		// generate the new method with replaced instList
+		newMethod = methodGen.getMethod();
+		// replace the method in the original class
+		cgen.replaceMethod(method, newMethod);
+		instList = new InstructionList(newMethod.getCode().getCode());
+
+		// for (InstructionHandle handle : instList.getInstructionHandles()) {
+		// 	optimizeArithmetic(handle, instList, cgen, cpgen);	            
+		// 	optimizeComparisons(handle, instList, cgen, cpgen);
+			
+		// 	// set max stack/local
+		// 	methodGen.setMaxStack();
+		// 	methodGen.setMaxLocals();
 				
-			methodGen.setInstructionList(instList);
+		// 	methodGen.setInstructionList(instList);
 				
-			// remove local variable table
-			methodGen.removeLocalVariables();
+		// 	// remove local variable table
+		// 	methodGen.removeLocalVariables();
 	
-			// generate the new method with replaced instList
-			newMethod = methodGen.getMethod();
-			// replace the method in the original class
-			cgen.replaceMethod(method, newMethod);
-		}
+		// 	// generate the new method with replaced instList
+		// 	newMethod = methodGen.getMethod();
+		// 	// replace the method in the original class
+		// 	cgen.replaceMethod(method, newMethod);
+		// }
 		System.out.println("**********************************");
 		System.out.println("******Instructions after**********");
 		System.out.println("**************************Count: "+instList.getLength()); 
