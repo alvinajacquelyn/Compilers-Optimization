@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.attribute.DosFileAttributeView;
 import java.util.Iterator;
 
 import org.apache.bcel.classfile.ClassParser;
@@ -18,6 +19,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 
 import org.apache.bcel.classfile.*;
@@ -50,7 +53,7 @@ public class ConstantFolder
 	 * GET PREVIOUS VALUES 
 	**/
 	/** ****************************************************************************************************************** **/
-	//This will also recognize BIPUSH and SIPUSH int values
+	//This will also recognize BIPUSH and SIPUSH int values as well as ICONST values
 	private int getPrevInt(InstructionHandle handle, InstructionList instList, ConstantPoolGen cpgen)
 	{
 		if (handle.getInstruction() instanceof LDC)
@@ -64,6 +67,10 @@ public class ConstantFolder
 		else if (handle.getInstruction() instanceof SIPUSH) 
 		{
 			return (int) ((SIPUSH)(handle.getInstruction())).getValue();
+		}
+		else if (handle.getInstruction() instanceof ICONST)
+		{
+			return (int) ((ICONST) handle.getInstruction()).getValue();
 		}
 		else
 		{
@@ -323,7 +330,73 @@ public class ConstantFolder
 			delete_handles(instList, handle,handle_to_delete_1, handle_to_delete_2);
 		}
 	}
+	
+	// ---------------------------------------------------------------------
+	// ----------------OPTIMIZE CONSTANTS + DYNAMIC VARS -------------------
+	private void optimiseVariables(Method method, InstructionList instList, ClassGen cgen, ConstantPoolGen cpgen)
+	{
+		// Optimises for:  int, long ,float and double
+		// HashSet<Integer> localVarIndices = getLocalVariableIndices(instList);
+		// LocalVariable[] localVariables = method.getLocalVariableTable().getLocalVariableTable();
+		// for (LocalVariable localVariable : localVariables) {
+		// 	System.out.println(localVariable);
+		// }
 
+		Hashtable<String, Object> variables = new Hashtable<String, Object>();
+		// Stores current values of all variables, where the key is the variable type + index
+		// e.g. I1 = 23; L2 = 2323232323434
+		for (InstructionHandle iHandle : instList.getInstructionHandles()) {
+			// INTEGERS
+			if (iHandle.getInstruction() instanceof ISTORE)
+			{
+				ISTORE var = ((ISTORE) iHandle.getInstruction());
+				String key = "I"+var.getIndex();
+				variables.put(key, getPrevInt(iHandle.getPrev(), instList, cpgen));
+				// if (variables.get(key) != null)
+				// {
+				// }
+			}
+			// LONGS
+			if (iHandle.getInstruction() instanceof LSTORE)
+			{
+				LSTORE var = ((LSTORE) iHandle.getInstruction());
+				String key = "L"+var.getIndex();
+				variables.put(key, getPrevLong(iHandle.getPrev(), instList, cpgen));
+			}
+			// FLOATS 
+			if (iHandle.getInstruction() instanceof FSTORE)
+			{
+				FSTORE var = ((FSTORE) iHandle.getInstruction());
+				String key = "F"+var.getIndex();
+				variables.put(key, getPrevFloat(iHandle.getPrev(), instList, cpgen));
+			}
+			// DOUBLES 
+			if (iHandle.getInstruction() instanceof DSTORE)
+			{
+				DSTORE var = ((DSTORE) iHandle.getInstruction());
+				String key = "D"+var.getIndex();
+				variables.put(key, getPrevDouble(iHandle.getPrev(), instList, cpgen));
+			}
+		}
+		System.out.println(variables);
+	}
+
+	private HashSet<Integer> getLocalVariableIndices(InstructionList instructions)
+	{
+		// gets indices of int, long ,float and double
+		HashSet<Integer> indices = new HashSet<Integer>();
+		InstructionFinder instructionFinder = new InstructionFinder(instructions);
+		Iterator itr = instructionFinder.search("StoreInstruction");
+		while(itr.hasNext())
+		{
+			InstructionHandle[] instructionHandles = (InstructionHandle[])itr.next();
+			System.out.println(instructionHandles);
+			StoreInstruction storeInstruction = (StoreInstruction)(instructionHandles[0].getInstruction());
+			indices.add(storeInstruction.getIndex());
+		}
+		return indices;
+	}
+	// ------------------------------------------------
 
 
 	public void printInstructions(ClassGen classGen,ConstantPoolGen constPoolGen){
@@ -351,6 +424,19 @@ public class ConstantFolder
 		System.out.println();
 	}
 	
+	public void getNumberConstantsPool(ConstantPool cp){
+		// get the constants in the pool
+		Constant[] constants = cp.getConstantPool();
+		for (int i = 0; i < constants.length; i++)
+		{
+			if (constants[i] instanceof ConstantInteger || constants[i] instanceof ConstantDouble || constants[i] instanceof ConstantLong || constants[i] instanceof ConstantFloat)
+			{
+				System.out.printf("%d) ",i);
+				System.out.println(constants[i]);
+			}
+		}
+		System.out.println();
+	}
 
 	private void optimizeMethod(ClassGen cgen, ConstantPoolGen cpgen, Method method) {
 		// Get the Code of the method, which is a collection of bytecode instructions
@@ -381,6 +467,7 @@ public class ConstantFolder
 		System.out.println(instList.toString());
 		//<name of opcode> "["<opcode number>"]" "("<length of instruction>")"
 		// InstructionHandle is a wrapper for actual Instructions
+		optimiseVariables(newMethod, instList, cgen, cpgen);
 		for (InstructionHandle handle : instList.getInstructionHandles()) {
 			optimizeArithmetic(handle, instList, cgen, cpgen);	            
 			optimizeComparisons(handle, instList, cgen, cpgen);
