@@ -176,6 +176,7 @@ public class ConstantFolder
 		//optimising arithmetic for longs
 		if (handle.getInstruction() instanceof LADD || handle.getInstruction() instanceof LSUB || handle.getInstruction() instanceof LMUL ||handle.getInstruction() instanceof LDIV)
 		{
+			// TODO ADD HANDLE FOR CONVERSIONS TO LONGS (REMOVE 3 INSTRUCTIONS, GET THE CORRECT VALUE)
 			System.out.println(".............optimising arithmetic for longs");
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
 			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
@@ -197,6 +198,7 @@ public class ConstantFolder
 		//optimising arithmetic for Floats
 		if (handle.getInstruction() instanceof FADD || handle.getInstruction() instanceof FSUB || handle.getInstruction() instanceof FMUL ||handle.getInstruction() instanceof FDIV)
 		{
+			// TODO ADD HANDLE FOR CONVERSIONS TO FLOATS
 			System.out.println(".............optimising arithmetic for floats");
 
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
@@ -219,10 +221,16 @@ public class ConstantFolder
 		//optimising arithmetic for doubles
 		if (handle.getInstruction() instanceof DADD || handle.getInstruction() instanceof DSUB || handle.getInstruction() instanceof DMUL ||handle.getInstruction() instanceof DDIV )
 		{
+			// TODO ADD HANDLE FOR CONVERSION TO DOUBLES
 			System.out.println(".............optimising arithmetic for doubles");
 			InstructionHandle handle_to_delete_1 = handle.getPrev(); 
 			InstructionHandle handle_to_delete_2 = handle.getPrev().getPrev();
 			//Searching for the values
+			// if (ValueGetter.getPrevDouble(handle_to_delete_1, instList, cpgen) == null)
+			// {
+			// 	handle_to_delete_1 = handle.getPrev().getPrev();
+			// 	handle_to_delete_2 = handle.getPrev().getPrev().getPrev();
+			// }
 			double value1 = getPrevDouble(handle.getPrev(), instList, cpgen);
 			double value2 = getPrevDouble(handle.getPrev().getPrev(), instList, cpgen);
 			double val = 0;
@@ -240,6 +248,10 @@ public class ConstantFolder
 
 	private void optimizeComparisons (InstructionHandle handle, InstructionList instList, ClassGen cgen, ConstantPoolGen cpgen)
 	{ 
+		// TODO FOR LONGS CHECK: LCMP
+		// TODO FOR DOUBNLES CHECK: DCMPL, DCMPG (treat the same way, only difference is how they handle NaNs)
+		// TODO FOR FLOATS CHECK: FCMPL, FCMPG (same as above)
+		// TODO if VALUES before the DCMPL, LCMP and so on cannot be decided (returns null from ValueGetter, do not optimise (will get optimised i nthe next pass))
 		
 		//optimising comparisons for integers
 		if (handle.getInstruction() instanceof IF_ICMPEQ || handle.getInstruction() instanceof IF_ICMPNE || handle.getInstruction() instanceof IF_ICMPLT || handle.getInstruction() instanceof IF_ICMPGE || handle.getInstruction() instanceof IF_ICMPGT || handle.getInstruction() instanceof IF_ICMPLE)
@@ -363,7 +375,23 @@ public class ConstantFolder
 	private boolean handleVariableStores(InstructionHandle iHandle, Hashtable<String, Object> variables, InstructionList instList, ConstantPoolGen cpgen)
 	{
 		// TODO Might need to add an option for IINC
+		// IF A VARIABLE IS MODIFED INSIDE A LOOP MIGHT CAUSE PROBLEMS:
+		// b = 3;	
+		// for loop:
+		//  a = b + 2;
+		//  b = 1;
 		// Takes care of modifying values of current variables if they can be "decided", returns true if a storing instruction occurs to ommit unnecessary calculations
+		if(iHandle.getInstruction() instanceof IINC)
+		{
+
+			IINC var = ((IINC) iHandle.getInstruction());
+			String key = "I"+var.getIndex();
+			if (variables.get(key) != null)
+			{
+				variables.remove(key);
+			}
+			return true;
+		}
 		// INTEGERS
 		if (iHandle.getInstruction() instanceof ISTORE)
 		{
@@ -611,6 +639,7 @@ public class ConstantFolder
 			// replace the method in the original class
 			cgen.replaceMethod(method, newMethod);
 		}
+		getNumberConstant(cpgen);
 		System.out.println("**********************************");
 		System.out.println("******Instructions after**********");
 		System.out.println("**************************Count: "+instList.getLength()); 
