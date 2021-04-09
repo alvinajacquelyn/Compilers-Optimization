@@ -401,6 +401,21 @@ public class ConstantFolder
 			if (val != null)
 			{
 				variables.put(key, (int) val);
+
+				// A hack to avoid modifying loop vars
+				InstructionHandle next = iHandle.getNext();
+				while((next) != null)
+				{
+					if (next.getInstruction() instanceof IINC)
+					{
+						if (((IINC) next.getInstruction()).getIndex() == var.getIndex())
+						{
+							variables.remove(key);
+							break;
+						}
+					}
+					next = next.getNext();
+				}
 			}
 			else if (variables.get(key) != null)
 			{
@@ -467,6 +482,7 @@ public class ConstantFolder
 			if (val != null)
 				{
 					System.out.println("...............optimising constant folding for integers");
+					System.out.println(iHandle);
 					instList.insert(iHandle, new PUSH(cpgen, (int) val));
 					try {
 						instList.delete(iHandle);
@@ -623,7 +639,7 @@ public class ConstantFolder
 
 		for (InstructionHandle handle : instList.getInstructionHandles()) {
 			optimizeArithmetic(handle, instList, cgen, cpgen);	            
-			optimizeComparisons(handle, instList, cgen, cpgen);
+			// optimizeComparisons(handle, instList, cgen, cpgen);
 			
 			// set max stack/local
 			methodGen.setMaxStack();
@@ -679,7 +695,7 @@ public class ConstantFolder
 
 	    cgen.setMajor(50);
 
-		this.optimized = gen.getJavaClass();
+		this.optimized = cgen.getJavaClass();
 	}
 
 	

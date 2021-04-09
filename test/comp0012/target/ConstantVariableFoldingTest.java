@@ -13,11 +13,13 @@ public class ConstantVariableFoldingTest {
 
     @Test
     public void testMethodOne(){
+        System.out.println(cvf.methodOne());
         assertEquals(3650, cvf.methodOne());
     }
 
     @Test
     public void testMethodTwo(){
+        System.out.println(cvf.methodTwo());
         assertEquals(1.67, cvf.methodTwo(), 0.001);
     }
 
