@@ -52,8 +52,6 @@ public class ConstantFolder
 		}
 	}
 
-
-	
 	/**
 	 * GET PREVIOUS VALUES 
 	**/
@@ -239,7 +237,11 @@ public class ConstantFolder
 		}
 	}
 
-	//delete handles
+
+
+
+
+
 	private void delete_handles(InstructionList instList, InstructionHandle handle, InstructionHandle handle_to_delete_1, InstructionHandle handle_to_delete_2) 
 	{
 
@@ -287,12 +289,12 @@ public class ConstantFolder
 		}
 	}
 
+
 	// optimise arithmetic operations
 	/*
 	iterates through the instructions until it finds a stack operation, w
 	then runs on the last two items pushed onto the stack
 	*/
-
 	private void optimizeArithmetic (InstructionHandle handle, InstructionList instList, ClassGen cgen, ConstantPoolGen cpgen)
 	{ 
 		//optimising arithmetic for integers
